@@ -5,7 +5,26 @@
   <title>Fetch Example from an iframe</title>
 </head>
   <body>
-    <h1>Page conaining frame to https://ggcaponetto.github.io/local-net-access/loading-webcomponent-loading-iframe.html</h1>
-    <iframe allow="local-network-access" src="https://ggcaponetto.github.io/local-net-access/loading-webcomponent-loading-iframe.html" width="800px" height="500px"></iframe>
+    <button id="fetchBtn">Fetch localhost:8080/wxcc_bundle.js</button>
+    <div id="result"></div>
+    <script>
+      document.getElementById('fetchBtn').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('result');
+        resultDiv.textContent = 'Fetching...';
+        try {
+          const response = await fetch('https://localhost:8080/wxcc_bundle.js');
+          if (response.ok) {
+            const text = await response.text();
+            resultDiv.textContent = `Success! Fetched ${text.length} bytes`;
+            console.log('Fetched content:', text);
+          } else {
+            resultDiv.textContent = `Error: ${response.status} ${response.statusText}`;
+          }
+        } catch (error) {
+          resultDiv.textContent = `Failed: ${error.message}`;
+          console.error('Fetch error:', error);
+        }
+      });
+    </script>
   </body>
-</html
+</html>
